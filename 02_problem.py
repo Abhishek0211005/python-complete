@@ -1,31 +1,19 @@
-s = set()
+import random
 
-n = int(input("Enter the number1:"))
-s.add(n)
-n = int(input("Enter the number2:"))
-s.add(n)
-n = int(input("Enter the number3:"))
-s.add(n)
-n = int(input("Enter the number4:"))
-s.add(n)
-n = int(input("Enter the number5:"))
-s.add(n)
-n = int(input("Enter the number6:"))
-s.add(n)
-n = int(input("Enter the number7:"))
-s.add(n)
-print(s)
+def game():
+    print("you are entering the game..")
+    score = random.randint(1, 100)
 
+    with open("hiscore.txt") as f:
+        hiscore = f.read()
+        if(hiscore!=""):
+            hiscore = int(hiscore)
+        else:
+            hiscore = 0
+    print(f"your score: {score}")
+    if(score>hiscore):
+        with open("hiscore.txt", "w") as f:
+            f.write(str(score))
+    return score
 
-# s = set()
-# d = input("enter the number:")
-# s.add(int(d))
-# d = input("enter the number:")
-# s.add(int(d))
-# d = input("enter the number:")
-# s.add(int(d))
-# d = input("enter the number:")
-# s.add(int(d))
-# d = input("enter the number:")
-# s.add(int(d))
-# print(s)
+game()
