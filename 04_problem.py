@@ -1,7 +1,9 @@
+word = "Donkey"
 
-s = set()
-s.add(20)
-s.add(20.0)
-s.add('20')
-print(s)
-print(len(s))
+with open("file.txt", "r")as f:
+    hello = f.read()
+
+Abhis = hello.replace(word, "######")
+
+with open("file.txt", "w")as f:
+    f.write(Abhis)
