@@ -1,5 +1,4 @@
-s = set()
-s.add(18)
-s.add("18")
-print(s)
-
+print("a")
+print("b")
+print("c", end="")
+print("d", end="hello"), 
