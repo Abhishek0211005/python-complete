@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FreshMart - Online Grocery Delivery</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top shadow">
+  <div class="container-fluid px-3">
+    <a class="navbar-brand fw-bold fs-4" href="#home">
+      <i class="bi bi-basket2-fill me-2"></i>FreshMart
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+        <li class="nav-item"><a class="nav-link" href="#offers">Offers</a></li>
+        <li class="nav-item"><a class="nav-link" href="#track">Track Order</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+      <!-- SEARCH BAR — NO FORM TAG (fixes page reload bug) -->
+      <div class="d-flex me-3 search-wrap">
+        <input class="form-control me-1" type="text" id="searchInput" placeholder="Search groceries..." autocomplete="off"/>
+        <button class="btn btn-warning" type="button" id="searchBtn" onclick="searchProducts()">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <button class="btn btn-light position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+        <i class="bi bi-cart3 fs-5 text-success"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO / BANNER ========== -->
+<section id="home" class="hero-section text-white d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <span class="badge bg-warning text-dark mb-3 px-3 py-2 fs-6">🚀 Free Delivery on orders above ₹499</span>
+        <h1 class="display-4 fw-bold">Fresh Groceries<br/><span class="text-warning">Delivered in 2 Hours!</span></h1>
+        <p class="lead mt-3 opacity-90">Order fresh fruits, vegetables, dairy & more. 55+ products across 5 categories.</p>
+        <div class="mt-4 d-flex flex-wrap gap-3">
+          <a href="#categories" class="btn btn-warning btn-lg"><i class="bi bi-bag-fill me-2"></i>Shop Now</a>
+          <a href="#offers"     class="btn btn-outline-light btn-lg"><i class="bi bi-tag-fill me-2"></i>View Offers</a>
+          <a href="#track"      class="btn btn-outline-warning btn-lg"><i class="bi bi-geo-alt me-2"></i>Track Order</a>
+        </div>
+      </div>
+      <div class="col-md-5 text-center mt-5 mt-md-0">
+        <div class="hero-emoji">🛒<br/>🥦🍎🥛🍌</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STATS BAR ========== -->
+<div class="stats-bar bg-white shadow-sm py-3">
+  <div class="container">
+    <div class="row text-center g-3">
+      <div class="col-6 col-md-3">
+        <div class="stat-item"><i class="bi bi-box-seam text-success fs-4"></i><div class="fw-bold">55+</div><small class="text-muted">Products</small></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-item"><i class="bi bi-clock text-warning fs-4"></i><div class="fw-bold">2 Hrs</div><small class="text-muted">Fast Delivery</small></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-item"><i class="bi bi-shield-check text-success fs-4"></i><div class="fw-bold">100%</div><small class="text-muted">Fresh Quality</small></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-item"><i class="bi bi-people text-warning fs-4"></i><div class="fw-bold">10K+</div><small class="text-muted">Happy Customers</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FEATURED ITEMS ========== -->
+<section class="py-5 bg-light" id="featured">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold mb-0">⭐ Featured Items</h2>
+      <a href="#categories" class="btn btn-outline-success btn-sm">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-3" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- ========== OFFERS CAROUSEL ========== -->
+<section id="offers" class="py-5">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-4">🏷️ Special Offers</h2>
+    <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="2"></button>
+      </div>
+      <div class="carousel-inner rounded-4 shadow">
+        <div class="carousel-item active">
+          <div class="carousel-banner offer-red text-white text-center py-5 px-4">
+            <div class="offer-icon">🎉</div>
+            <h2 class="fw-bold display-5">Flat 30% OFF</h2>
+            <p class="fs-4">On all Fresh Fruits &amp; Vegetables today!</p>
+            <span class="badge bg-warning text-dark fs-6 px-4 py-2">Use code: FRESH30</span>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-banner offer-yellow text-dark text-center py-5 px-4">
+            <div class="offer-icon">🪔</div>
+            <h2 class="fw-bold display-5">Festival Special</h2>
+            <p class="fs-4">Buy 2 Get 1 FREE on Dairy Products!</p>
+            <span class="badge bg-danger text-white fs-6 px-4 py-2">Limited Time Offer</span>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-banner offer-green text-white text-center py-5 px-4">
+            <div class="offer-icon">🛒</div>
+            <h2 class="fw-bold display-5">Combo Deal</h2>
+            <p class="fs-4">Weekly Veggie Basket + Dairy Pack at ₹499!</p>
+            <span class="badge bg-light text-dark fs-6 px-4 py-2">Save ₹200</span>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CATEGORIES + PRODUCTS ========== -->
+<section id="categories" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-4">🛍️ Shop by Category</h2>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar rounded-3 p-3 mb-4 shadow-sm bg-white">
+      <div class="row g-2 align-items-end">
+        <div class="col-6 col-md-3">
+          <label class="form-label fw-semibold small">Type</label>
+          <select class="form-select form-select-sm" id="filterType">
+            <option value="all">All Types</option>
+            <option value="veg">🟢 Vegetarian</option>
+            <option value="nonveg">🔴 Non-Veg</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label fw-semibold small">Category</label>
+          <select class="form-select form-select-sm" id="filterCategory">
+            <option value="all">All Categories</option>
+            <option value="Fruits & Vegetables">🥦 Fruits &amp; Veg</option>
+            <option value="Dairy Products">🥛 Dairy</option>
+            <option value="Snacks">🥜 Snacks</option>
+            <option value="Beverages">🧃 Beverages</option>
+            <option value="Household Items">🏠 Household</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label fw-semibold small">Brand</label>
+          <select class="form-select form-select-sm" id="filterBrand">
+            <option value="all">All Brands</option>
+            <option value="Amul">Amul</option>
+            <option value="Nestle">Nestle</option>
+            <option value="Haldiram">Haldiram</option>
+            <option value="Tropicana">Tropicana</option>
+            <option value="Local">Local Farm</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label fw-semibold small">Max Price: ₹<span id="priceVal">500</span></label>
+          <input type="range" class="form-range" id="filterPrice" min="10" max="500" value="500"
+            oninput="document.getElementById('priceVal').textContent=this.value; applyFilters()"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="d-flex flex-wrap gap-2 mb-4" id="categoryTabs">
+      <button class="btn-cat active" onclick="filterByTab('all',this)">All</button>
+      <button class="btn-cat" onclick="filterByTab('Fruits &amp; Vegetables',this)">🥦 Fruits &amp; Veg</button>
+      <button class="btn-cat" onclick="filterByTab('Dairy Products',this)">🥛 Dairy</button>
+      <button class="btn-cat" onclick="filterByTab('Snacks',this)">🍿 Snacks</button>
+      <button class="btn-cat" onclick="filterByTab('Beverages',this)">🧃 Beverages</button>
+      <button class="btn-cat" onclick="filterByTab('Household Items',this)">🏠 Household</button>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row g-3" id="productsGrid"></div>
+    <div class="text-center mt-4 d-none" id="noResults">
+      <div class="py-5">
+        <i class="bi bi-search display-3 text-muted"></i>
+        <p class="text-muted mt-3 fs-5">No products found. Try a different search.</p>
+        <button class="btn btn-success" onclick="resetSearch()">Show All Products</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ORDER TRACKING SECTION ========== -->
+<section id="track" class="py-5 track-section">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-2">📦 Track Your Order</h2>
+    <p class="text-center text-muted mb-5">Enter your Order ID to get live delivery status</p>
+
+    <!-- Search Order -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-6">
+        <div class="input-group shadow-sm">
+          <span class="input-group-text bg-success text-white border-0"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control border-0 py-3" id="orderSearchInput" placeholder="Enter Order ID (e.g. FM-1001)" />
+          <button class="btn btn-success px-4" type="button" onclick="trackOrder()">Track</button>
+        </div>
+        <div class="text-center mt-2">
+          <small class="text-muted">Try: FM-1001 · FM-1002 · FM-1003</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Result -->
+    <div id="trackResult" class="d-none">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="track-card shadow rounded-4 p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+              <div>
+                <h5 class="fw-bold mb-1">Order <span id="tOrderId" class="text-success"></span></h5>
+                <small class="text-muted" id="tOrderDate"></small>
+              </div>
+              <span id="tStatusBadge" class="badge fs-6 px-3 py-2"></span>
+            </div>
+
+            <!-- Items -->
+            <div class="mb-4">
+              <h6 class="fw-bold text-muted mb-2">ITEMS ORDERED</h6>
+              <div id="tItems"></div>
+            </div>
+
+            <!-- Total -->
+            <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded-3">
+              <span class="fw-semibold">Order Total</span>
+              <span class="fw-bold fs-5 text-success">₹<span id="tTotal"></span></span>
+            </div>
+
+            <!-- Progress Tracker -->
+            <h6 class="fw-bold text-muted mb-3">DELIVERY PROGRESS</h6>
+            <div class="track-steps">
+              <div class="track-step" id="step1">
+                <div class="step-icon"><i class="bi bi-check2-circle"></i></div>
+                <div class="step-line"></div>
+                <div class="step-label">Order Placed</div>
+                <div class="step-time" id="stepTime1"></div>
+              </div>
+              <div class="track-step" id="step2">
+                <div class="step-icon"><i class="bi bi-box-seam"></i></div>
+                <div class="step-line"></div>
+                <div class="step-label">Packing</div>
+                <div class="step-time" id="stepTime2"></div>
+              </div>
+              <div class="track-step" id="step3">
+                <div class="step-icon"><i class="bi bi-bicycle"></i></div>
+                <div class="step-line"></div>
+                <div class="step-label">Out for Delivery</div>
+                <div class="step-time" id="stepTime3"></div>
+              </div>
+              <div class="track-step" id="step4">
+                <div class="step-icon"><i class="bi bi-house-check"></i></div>
+                <div class="step-line last"></div>
+                <div class="step-label">Delivered</div>
+                <div class="step-time" id="stepTime4"></div>
+              </div>
+            </div>
+
+            <!-- Delivery Info -->
+            <div class="row g-3 mt-3">
+              <div class="col-md-6">
+                <div class="info-box p-3 rounded-3 bg-light">
+                  <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                  <strong>Delivery Address</strong>
+                  <p class="mb-0 mt-1 text-muted small" id="tAddress"></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box p-3 rounded-3 bg-light">
+                  <i class="bi bi-person-fill text-success me-2"></i>
+                  <strong>Delivery Agent</strong>
+                  <p class="mb-0 mt-1 text-muted small" id="tAgent"></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="mt-5" id="recentOrdersSection">
+      <h5 class="fw-bold mb-3 text-center">🕐 Your Recent Orders</h5>
+      <div class="row g-3 justify-content-center" id="recentOrders"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== PRODUCT MODAL ========== -->
+<div class="modal fade" id="productModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-success text-white border-0">
+        <h5 class="modal-title fw-bold" id="modalProductName"></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row g-4">
+          <div class="col-md-5 text-center">
+            <div id="modalProductEmoji" class="modal-emoji mb-3"></div>
+            <span id="modalType" class="badge fs-6 px-3 py-2"></span>
+          </div>
+          <div class="col-md-7">
+            <h4 id="modalName" class="fw-bold"></h4>
+            <p id="modalDesc" class="text-muted"></p>
+            <div class="d-flex gap-3 mb-3">
+              <span class="badge bg-light text-dark border"><i class="bi bi-tag me-1"></i><span id="modalBrand"></span></span>
+              <span class="badge bg-light text-dark border"><i class="bi bi-grid me-1"></i><span id="modalCategory"></span></span>
+            </div>
+            <h3 class="text-success fw-bold">₹<span id="modalPrice"></span></h3>
+            <div class="d-flex align-items-center gap-3 mt-4">
+              <span class="fw-semibold">Quantity:</span>
+              <div class="input-group" style="width:140px">
+                <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('modalQty').stepDown()">−</button>
+                <input type="number" class="form-control text-center fw-bold" id="modalQty" value="1" min="1" max="20"/>
+                <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('modalQty').stepUp()">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success px-4" onclick="addToCartFromModal()">
+          <i class="bi bi-cart-plus me-2"></i>Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CART OFFCANVAS ========== -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
+  <div class="offcanvas-header bg-success text-white">
+    <h5 class="offcanvas-title fw-bold"><i class="bi bi-cart3 me-2"></i>Your Cart</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column p-0">
+    <div id="cartItems" class="flex-grow-1 p-3"></div>
+    <div class="cart-footer border-top p-3">
+      <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
+        <span>Total:</span>
+        <span class="text-success">₹<span id="cartTotal">0</span></span>
+      </div>
+      <button class="btn btn-success w-100 mb-2 py-2 fw-semibold" onclick="checkout()">
+        <i class="bi bi-bag-check me-2"></i>Proceed to Checkout
+      </button>
+      <button class="btn btn-outline-danger w-100 py-2" onclick="clearCart()">
+        <i class="bi bi-trash me-2"></i>Clear Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer id="contact" class="pt-5 pb-3 bg-dark text-white">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h4 class="fw-bold text-warning mb-3"><i class="bi bi-basket2-fill me-2"></i>FreshMart</h4>
+        <p class="text-secondary">Your trusted online grocery store delivering fresh products in 2 hours across Delhi NCR.</p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6 class="fw-bold text-white mb-3">Quick Links</h6>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#categories">Categories</a></li>
+          <li><a href="#offers">Offers</a></li>
+          <li><a href="#track">Track Order</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6 class="fw-bold text-white mb-3">Categories</h6>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#categories">Fruits &amp; Veg</a></li>
+          <li><a href="#categories">Dairy</a></li>
+          <li><a href="#categories">Snacks</a></li>
+          <li><a href="#categories">Beverages</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6 class="fw-bold text-white mb-3">Contact Us</h6>
+        <p class="text-secondary mb-2"><i class="bi bi-envelope-fill me-2 text-warning"></i>support@freshmart.in</p>
+        <p class="text-secondary mb-2"><i class="bi bi-telephone-fill me-2 text-warning"></i>+91 98765 43210</p>
+        <p class="text-secondary mb-3"><i class="bi bi-geo-alt-fill me-2 text-warning"></i>Connaught Place, New Delhi</p>
+        <div class="newsletter-box">
+          <div class="input-group">
+            <input type="email" class="form-control bg-secondary border-0 text-white" placeholder="Your email..."/>
+            <button class="btn btn-warning">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="border-secondary mt-4"/>
+    <p class="text-center text-secondary mb-0 small">© 2026 FreshMart. All rights reserved. Made with ❤️ in India.</p>
+  </div>
+</footer>
+
+<!-- ========== TOAST ========== -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="cartToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body fw-semibold" id="toastMsg">Item added to cart!</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
